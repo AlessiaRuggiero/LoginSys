@@ -1,5 +1,4 @@
 import tkinter as tk
-from tkinter import messagebox
 import pymongo
 
 # Manage database --------------------------------------------------------------
@@ -56,8 +55,9 @@ def login_registration():
         new_login = {'username': new_username_entry.get(), 'password': new_password_entry.get()}
 
         # Check that new_login does not already exist in the database
-        if login_exists(new_login['username'], new_login['password']):
-            already_exists_err = tk.Label(login_registration_frame, text='Account already exists.', bg='grey10',
+        if login_credentials.count_documents({'username': {'$eq': new_login['username']}}) > 0:
+            already_exists_err = tk.Label(login_registration_frame,
+                                          text='An account with that username already exists.', bg='grey10',
                                           fg='red', font=('Cooper Black', 15, 'bold'))
             already_exists_err.grid(row=4, column=0, columnspan=2, pady=30)
             already_exists_err.after(2000, login_registration)
